@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "composite": true,
+        "moduleResolution": "Node",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "types": ["node"]
+    },
+    "include": ["src/**/*.ts"],
+    "references": [{ "path": "./tsconfig.node.json" }]
+}
