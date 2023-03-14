@@ -1,9 +1,7 @@
-import type { PluginContext, AcornNode, SourceMap } from 'rollup'
+import type { PluginContext, AcornNode } from 'rollup'
 import type { TransformResult, Logger } from 'vite'
 import type { INecessaryImportOptions, IStylePathFactory, IStyleType } from '.'
-import es from './parser/es'
-import ts from './parser/ts'
-import vue2 from './parser/vue2'
+import def from './parser/def'
 import { createDefaultStylePathFactory } from './utils'
 
 declare module 'rollup' {
@@ -36,7 +34,7 @@ export interface IBlock {
     /** 原始代码块 */
     source: string
     /** 映射的map */
-    map: SourceMap
+    map: any
     /** 待添加的语句 */
     prefix?: string
 }
@@ -67,19 +65,19 @@ export class Transformer {
     options!: Required<INecessaryImportOptions> & { extension: Array<IStyleType> }
 
     /** 用于文件转换的 parser */
-    private parsers: Array<IParser> = [vue2, ts, es]
+    private parsers: Array<IParser> = [def]
 
     /** 获取解析器 */
-    private getParser(id: string, code: string): IParser {
+    private getParser(id: string, code: string): IParser | undefined {
         return this.parsers.find((parser) => parser.match(id, code))
     }
 
     /** 转换 */
-    async transform(id: string, code: string): Promise<TransformResult> {
+    async transform(id: string, code: string): Promise<TransformResult | undefined> {
         const { root, ctx } = this
-        const parser: IParser = this.getParser(id, code)
+        const parser: IParser = this.getParser(id, code)!
         // ? 如果缺少对应的解析器, 那么跳过文件处理
-        if (!parser) return undefined
+        if (!parser) return
         this.logger.info(`necessary import > parser: ${parser.name}, file: ${id}`)
         const blocks = await parser.tranfromToBlock(id, code, { ctx, root })
         for (const block of blocks) {
@@ -118,10 +116,10 @@ export class Transformer {
             .filter((componentName: string): boolean => {
                 return !(noComponent ?? []).includes(componentName)
             })
-            .map((componentName: string): string => {
+            .map((componentName: string): string | undefined => {
                 return this.transformComponentNameToStyleImportStatement(componentName)
             })
-            .filter((statemnet: string): boolean => !!statemnet)
+            .filter((statemnet: string | undefined): boolean => !!statemnet) as Array<string>
 
         // ? 如果存在待导入的样式, 那么附加到源码上返回
         if (styleImportStatements.length) {
@@ -130,7 +128,7 @@ export class Transformer {
     }
 
     /** 将 组件名转化为样式导入语句 */
-    private transformComponentNameToStyleImportStatement(componentName: string): string {
+    private transformComponentNameToStyleImportStatement(componentName: string): string | undefined {
         const { noFoundStyle } = this.options
         const stylePathFactory = this.createStylePathFactory()
 

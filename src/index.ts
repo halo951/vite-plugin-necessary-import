@@ -124,7 +124,7 @@ export const necessaryImport = (options: INecessaryImportOptions): Plugin => {
             transformer.ctx = this as unknown as PluginContext
         },
         /** lifecycle: 处理代码 */
-        async transform(code: string, id: string): Promise<TransformResult> {
+        async transform(code: string, id: string): Promise<TransformResult | undefined> {
             // ? 过滤掉其他文件
             if (!filter(id)) return
             const res = await transformer.transform(id, code)

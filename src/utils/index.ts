@@ -2,7 +2,7 @@ import type { IStylePathFactory } from '..'
 import { globSync } from 'glob'
 import { normalizePath } from 'vite'
 import * as np from 'node:path'
-import * as mod from 'node:module'
+import mod from 'node:module'
 import { createHash } from 'node:crypto'
 
 const cache: Map<string, Array<string>> = new Map()
