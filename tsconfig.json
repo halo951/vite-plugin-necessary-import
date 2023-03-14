@@ -1,15 +1,35 @@
 {
+    "include": ["src/**/*.ts"],
+    "exclude": [],
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "composite": true,
-        "moduleResolution": "Node",
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
+        "lib": ["esnext"],
         "types": ["node"],
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "jsx": "preserve",
+        "sourceMap": false,
+        "noEmit": true,
+        "noEmitHelpers": true,
+        "removeComments": false,
+        "importHelpers": true,
+        "resolveJsonModule": true,
+
+        "strict": false,
+        "noUnusedLocals": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": false,
+        "allowSyntheticDefaultImports": true,
+        "noEmitOnError": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
         "declaration": true,
         "declarationDir": "typings"
-    },
-    "include": ["src/**/*.ts"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    }
 }
