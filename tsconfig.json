@@ -6,7 +6,9 @@
         "moduleResolution": "Node",
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
-        "types": ["node"]
+        "types": ["node"],
+        "declaration": true,
+        "declarationDir": "typings"
     },
     "include": ["src/**/*.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]

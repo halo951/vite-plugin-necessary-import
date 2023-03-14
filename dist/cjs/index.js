@@ -145,7 +145,7 @@ class Transformer {
         }
         return parser.output(id, blocks);
     }
-    /**  */
+    /** 添加样式导入 */
     appendStyleImport(source) {
         const { library, noComponent } = this.options;
         const rootNode = this.ctx.parse(source);
