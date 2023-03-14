@@ -1,7 +1,7 @@
 {
     "name": "vite-plugin-necessary-import",
     "description": "vite 按需引用插件 (部分完成, 暂时仅测试 vite + vue2 项目, 慎用)",
-    "version": "0.0.1-dev.2",
+    "version": "0.0.1-dev.3",
     "keywords": [],
     "license": "MIT",
     "sideEffects": false,
