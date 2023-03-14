@@ -66,7 +66,7 @@ export default defineConfig({
 
     -   `vue@2.x` : vite + @vitejs/plugin-vue2 + vue(>=2.6.11)
         -   meri-design | ✔
-        -   element-ui | ✔ (局限性: 组件内部引用 Icon 等基础组件时, 需要额外注册基础组件引用)
+        -   element-ui | ✔ ([存在局限性](#局限性))
         -   vant@2.12.54 | ✔
         -   ant-design-vue@1.7.8 | ✔
     -   `vue@3.x` : vite + @vitejs/plugin-vue
@@ -87,7 +87,13 @@ export default defineConfig({
 
 > 这里记录已知的局限定和对应的解决方案
 
-1. `element-ui` 的 `<Progress>` 组件依赖 `<Icon>` 组件的样式, 这个工具并未去引用它. 需要额外注册 `<Icon />` 组件。这一行为可以放在`main.ts`中进行.
+1. 部分组件使用了公共样式注册机制(包含: 组件间样式依赖及公共样式集), 按需加载时仅加载了组件样式, 公共样式需要另外注册.
+    1. 目前已知的受影响组件库
+        - `element-ui`
+        - `meri-plus`
+    2. 处理方案
+        - 在入口文件(`main.ts`) 内引入公共样式
+        - 或全局注册依赖缺少的依赖组件
 
 ## RoadMap
 

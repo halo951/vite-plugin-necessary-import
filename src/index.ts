@@ -98,7 +98,7 @@ export const necessaryImport = (options: INecessaryImportOptions): Plugin => {
         configResolved(config: ResolvedConfig): void {
             // ? 判断依赖项是否安装
             if (!isInstalledDependency(options.library, config.root)) {
-                throw new Error(`> necessaryImport: The library '${options.library}' is not install.`)
+                logger.warn(`> necessaryImport: The library '${options.library}' is not install.`)
             }
             // @ 考虑 monorepo 可能存在映射的关系, 默认的styleDir不便于获取 package.main 参数, 暂定为根路径
             const styleDir = options.styleDir ?? '/'
