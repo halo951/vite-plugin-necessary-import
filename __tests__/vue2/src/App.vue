@@ -3,7 +3,7 @@ import { Button, Pagination } from 'meri-design'
 import { Progress as ElProgress, Button as ElButton, Icon } from 'element-ui'
 import { Pagination as APagination } from 'ant-design-vue'
 import { Progress as VProgress, Skeleton as VanSkeleton, Circle as VanCircle } from 'vant'
-import 'vant/lib/index.css'
+
 let current = 10
 </script>
 

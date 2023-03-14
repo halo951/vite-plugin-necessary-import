@@ -47,11 +47,23 @@ import { necessaryImport } from 'vite-necessary-import'
 
 export default defineConfig({
     plugins: [
-        // + 添加插件
+        // element-ui
+        necessaryImport({ library: 'element-ui' }),
+        // antdv
+        necessaryImport({ library: 'ant-design-vue' }),
+        // vant
+        necessaryImport({ library: 'vant' }),
+        // meri-design
         necessaryImport({ library: 'meri-design' })
     ]
 })
 ```
+
+## 局限性
+
+> 这里记录已知的局限定和对应的解决方案
+
+1. `element-ui` 的 `<Progress>` 组件依赖 `<Icon>` 组件的样式, 这个工具并未去引用它. 需要额外注册 `<Icon />` 组件。这一行为可以放在`main.ts`中进行.
 
 ## QA
 
@@ -63,9 +75,9 @@ export default defineConfig({
 
     -   受我目前的项目类型影响, 我仅测试了如下文件的按需引用能力. `.vue` (包括: vue2, vue3), `.ts(x)`, `.js(x)`, 如果发现问题, 可以向我提 issues 反馈
 
-2.  从 babel-plugin-import 迁移
+2.  babel-plugin-import
 
-    这个相对来说比较简单, 仅需要删除 babel 内的按需引用配置, 并在`vite.config.ts`中, 添加此插件即可。相对于
+    这个项目就是仿照 babel-plugin-import 实现的, 目的是希望原有使用 @vue/cli-service 构建的库能够平滑过渡到 vite
 
 3.  为什么有了 `unplugin-auto-import` + `unplugin-vue-component` 方案, 还要再创建这个插件
 
