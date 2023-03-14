@@ -1,6 +1,6 @@
 {
     "name": "vite-plugin-necessary-import",
-    "description": "vite 按需引用插件 (部分完成, 暂时仅测试 vite + vue2 项目, 慎用)",
+    "description": "vite 按需引用插件 (已支持: vue@2.x, vue@3.x)",
     "version": "0.0.1-dev.3",
     "keywords": [],
     "license": "MIT",
