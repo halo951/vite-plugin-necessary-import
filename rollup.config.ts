@@ -1,7 +1,8 @@
+import type { RollupOptions, ModuleFormat } from 'rollup'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
-import { RollupOptions } from 'rollup'
 import * as fs from 'node:fs'
+import * as np from 'node:path'
 
 const pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf-8' }))
 
@@ -14,6 +15,7 @@ const banner: string = `
 
 /** export rollup.config */
 export default async (): Promise<RollupOptions | Array<RollupOptions>> => {
+    const formats: Array<ModuleFormat> = ['cjs', 'es']
     return {
         treeshake: false,
         strictDeprecations: false,
@@ -23,12 +25,12 @@ export default async (): Promise<RollupOptions | Array<RollupOptions>> => {
             // compress
             terser()
         ],
-        output: {
+        output: formats.map((format) => ({
             exports: 'auto',
             inlineDynamicImports: true,
             banner,
-            format: 'cjs',
-            file: 'dist/index.js'
-        }
+            format,
+            file: np.join('dist', format, 'index.js')
+        }))
     }
 }

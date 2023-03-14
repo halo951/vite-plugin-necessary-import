@@ -1,4 +1,4 @@
-import { PluginContext } from 'rollup'
+import type { PluginContext } from 'rollup'
 import type { Plugin, FilterPattern, LogLevel, ResolvedConfig, TransformResult } from 'vite'
 import { createFilter, createLogger } from 'vite'
 import { Transformer } from './transformer'
@@ -82,21 +82,22 @@ export interface INecessaryImportOptions extends IViteCommonOptions {
  * @returns {Plugin}
  */
 export const necessaryImport = (options: INecessaryImportOptions): Plugin => {
-    const include: FilterPattern = options.include ?? ['src/main.ts', 'src/App.vue']
+    const include: FilterPattern = options.include ?? ['src/**/*.ts(x|)', 'src/**/*.js(x|)', 'src/**/*.vue']
     const exclude: FilterPattern = options.exclude ?? []
-    const logLevel: LogLevel = options.logLevel ?? 'info'
+    const logLevel: LogLevel = options.logLevel ?? 'warn'
     // @ 定义过滤器
     const filter = createFilter(include, exclude)
     // @ 定义日志工具
     const logger = createLogger(logLevel)
     // @ 定义按需加载的 transformer
     const transformer = new Transformer()
+
     return {
         name: 'vite-plugin:necessary-import',
         enforce: 'post',
         configResolved(config: ResolvedConfig): void {
             // ? 判断依赖项是否安装
-            if (isInstalledDependency(options.library, config.root)) {
+            if (!isInstalledDependency(options.library, config.root)) {
                 throw new Error(`> necessaryImport: The library '${options.library}' is not install.`)
             }
             // @ 考虑 monorepo 可能存在映射的关系, 默认的styleDir不便于获取 package.main 参数, 暂定为根路径
@@ -110,14 +111,14 @@ export const necessaryImport = (options: INecessaryImportOptions): Plugin => {
             transformer.root = config.root
             transformer.logger = logger
             transformer.options = {
+                library: options.library,
+                noFoundStyle: options.noFoundStyle ?? 'warn',
+                noComponent: options.noComponent ?? [],
                 include,
                 exclude,
                 logLevel,
                 styleDir,
-                extension,
-                noComponent: [],
-                noFoundStyle: 'warn',
-                ...options
+                extension
             }
         },
         buildStart(): void {

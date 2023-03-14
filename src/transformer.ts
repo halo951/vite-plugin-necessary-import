@@ -1,8 +1,9 @@
 import type { PluginContext, AcornNode } from 'rollup'
 import type { TransformResult, Logger } from 'vite'
 import type { INecessaryImportOptions, IStylePathFactory, IStyleType } from '.'
-import def from './parser/def'
 import { createDefaultStylePathFactory } from './utils'
+import def from './parser/def'
+import vue from './parser/vue'
 
 declare module 'rollup' {
     interface Position {
@@ -65,7 +66,7 @@ export class Transformer {
     options!: Required<INecessaryImportOptions> & { extension: Array<IStyleType> }
 
     /** 用于文件转换的 parser */
-    private parsers: Array<IParser> = [def]
+    private parsers: Array<IParser> = [vue, def]
 
     /** 获取解析器 */
     private getParser(id: string, code: string): IParser | undefined {
@@ -79,6 +80,7 @@ export class Transformer {
         // ? 如果缺少对应的解析器, 那么跳过文件处理
         if (!parser) return
         this.logger.info(`necessary import > parser: ${parser.name}, file: ${id}`)
+        if (this.options.logLevel === 'silent') console.time(`parser: ${parser.name}`)
         const blocks = await parser.tranfromToBlock(id, code, { ctx, root })
         for (const block of blocks) {
             if (['script', 'scriptsetup'].includes(block.type)) {
@@ -88,6 +90,7 @@ export class Transformer {
                 }
             }
         }
+        if (this.options.logLevel === 'silent') console.timeEnd(`parser: ${parser.name}`)
         return parser.output(id, blocks)
     }
 
@@ -105,8 +108,10 @@ export class Transformer {
         for (const node of body) {
             if (node.type === 'ImportDeclaration' && isLibraryImport(node)) {
                 for (const specifier of node.specifiers) {
-                    const componentName: string = specifier.imported.name
-                    components.push(componentName)
+                    if (specifier.imported?.name) {
+                        const componentName: string = specifier.imported.name
+                        components.push(componentName)
+                    }
                 }
             }
         }
@@ -134,8 +139,8 @@ export class Transformer {
 
         // 获取生成的路径信息
         const stylePath = stylePathFactory(componentName)
-
         if (stylePath) {
+            this.logger.info(`necessary import > import '${stylePath}'`)
             return `import '${stylePath}';`
         } else {
             // ? 如果返回值是 null, 那么这个导入的对象是用户指定的非组件对象, 忽略导入

@@ -2,6 +2,30 @@
 
 > vite 按需引用插件
 
+## testing
+
+-   framework
+
+    -   `vue@2.x.x` : vite + @vitejs/plugin-vue2 + vue(>=2.6.11)
+        -   meri-design | ✔
+        -   element-ui | ✔ (局限性: 组件内部引用 Icon 等基础组件时, 需要额外注册基础组件引用)
+        -   vant@2.12.54 | ✔
+        -   ant-design-vue@1.7.8 | ✔
+    -   `vue2:js` : vite + @vitejs/plugin-vue2
+    -   `vue3` : vite + @vitejs/plugin-vue | ✔
+    -   `react` : vite + @vitejs/plugin-react | ✔
+    -   `react:swc` : vite + @vitejs/plugin-react | ✔
+    -   `svelte` : vite + @vitejs/plugin-svelte | ✔
+    -   `vue2` : vite + @vitejs/plugin-vue2 | ✔
+
+-   ui library
+
+    -   element-ui
+    -   element-plus
+    -   meri-design
+    -   vant
+    -   ant-design-vue
+
 ## Usage
 
 -   install
