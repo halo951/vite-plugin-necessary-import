@@ -1,4 +1,4 @@
-import type { PluginContext, SourceMap } from 'rollup';
+import type { PluginContext } from 'rollup';
 import type { TransformResult, Logger } from 'vite';
 import type { INecessaryImportOptions, IStyleType } from '.';
 declare module 'rollup' {
@@ -30,7 +30,7 @@ export interface IBlock {
     /** 原始代码块 */
     source: string;
     /** 映射的map */
-    map: SourceMap;
+    map: any;
     /** 待添加的语句 */
     prefix?: string;
 }
@@ -63,7 +63,7 @@ export declare class Transformer {
     /** 获取解析器 */
     private getParser;
     /** 转换 */
-    transform(id: string, code: string): Promise<TransformResult>;
+    transform(id: string, code: string): Promise<TransformResult | undefined>;
     /** 添加样式导入 */
     private appendStyleImport;
     /** 将 组件名转化为样式导入语句 */
