@@ -29,13 +29,13 @@ import { necessaryImport } from 'vite-necessary-import'
 export default defineConfig({
     plugins: [
         // element-ui
-        necessaryImport({ library: 'element-ui' }),
+        necessaryImport({ library: 'element-ui', base: true }),
         // antdv
-        necessaryImport({ library: 'ant-design-vue' }),
+        necessaryImport({ library: 'ant-design-vue', base: true }),
         // vant
-        necessaryImport({ library: 'vant' }),
+        necessaryImport({ library: 'vant', base: true }),
         // meri-design
-        necessaryImport({ library: 'meri-design' }),
+        necessaryImport({ library: 'meri-design', base: true }),
         // 其他
         necessaryImport({ library: '<组件库的 name>' })
     ]
@@ -47,6 +47,7 @@ export default defineConfig({
 | option       | type                         | required | desc                                                   | default                      |
 | ------------ | ---------------------------- | -------- | ------------------------------------------------------ | ---------------------------- |
 | library      | string                       | ✔        | 需要按需引用的库名                                     |                              |
+| base         | string                       |          | 是否添加公共(基础)样式,如果有的情况下                  | false                        |
 | include      | FilterPattern                |          | 扫描文件目录 (见源码注释)                              |                              |
 | exclude      | FilterPattern                |          | 排除文件目录                                           | []                           |
 | extension    | `Array<IStyleType>`          |          | 样式文件类型(扩展名)                                   | ['css','less','scss','sass'] |
@@ -65,35 +66,19 @@ export default defineConfig({
 -   framework
 
     -   `vue@2.x` : vite + @vitejs/plugin-vue2 + vue(>=2.6.11)
-        -   meri-design | ✔
-        -   element-ui | ✔ ([存在局限性](#局限性))
+        -   meri-design@latest | ✔
+        -   element-ui@latest | ✔
         -   vant@2.12.54 | ✔
         -   ant-design-vue@1.7.8 | ✔
     -   `vue@3.x` : vite + @vitejs/plugin-vue
+        -   meri-plus | ✔
     -   `react` : vite + @vitejs/plugin-react
     -   `react+swc` : vite + @vitejs/plugin-react
     -   `svelte` : vite + @vitejs/plugin-svelte
 
--   ui library
-
-    -   element-ui
-    -   element-plus
-    -   meri-design
-    -   vant
-    -   ant-design-vue
-    -
-
 ## 局限性
 
-> 这里记录已知的局限定和对应的解决方案
-
-1. 部分组件使用了公共样式注册机制(包含: 组件间样式依赖及公共样式集), 按需加载时仅加载了组件样式, 公共样式需要另外注册.
-    1. 目前已知的受影响组件库
-        - `element-ui`
-        - `meri-plus`
-    2. 处理方案
-        - 在入口文件(`main.ts`) 内引入公共样式
-        - 或全局注册依赖缺少的依赖组件
+1. 目前功能仅在 `vue2.x`, `vue3.x` 进行过测试
 
 ## RoadMap
 
@@ -121,7 +106,3 @@ export default defineConfig({
     在这个插件创建之前, 我从`element-plus` 了解到 `unplugin-auto-import` + `unplugin-vue-component` 这套方案。他的机制时, 扫描使用的组件名, 如`<template>`中的组件, 让 resolver 根据组件名, 去匹配相关内容. 这套机制放在规范标准的库下面没有什么问题, 如:`antdv`, `element` 等， 这些组件库会为自己的组件增加命名前缀。但是, 一些小的组件库(比如我们团队的`meri-design`), 他的命名规范没有那么标准(没有命名前缀, 如:`<Button>`,`<Avatar>`这样 😂), 就比较难受了。
 
     另外, `unplugin-auto-import` + `unplugin-vue-component` 方案, 聚合了太多冗余的能力, 如: `动态的dts配置`, 我不太喜欢他把 dts 文件生成到项目根目录下的行为, 然后就搞了一个这个库~
-
-```
-
-```
