@@ -72,6 +72,15 @@ export interface INecessaryImportOptions extends IViteCommonOptions {
      * @type {false} 忽略
      */
     noFoundStyle?: 'warn' | 'error' | false
+
+    /** 基础样式
+     *
+     * @description 当设置启用时, 默认会在入口文件中注入检索的 base 样式
+     * @type {true} 默认检索文件 `base.<extension>`
+     * @type {string} 遵循base指定的样式文件名
+     * @type {null|undefined} 忽略
+     */
+    base?: true | string | null
 }
 
 /** vite 按需引用插件
@@ -118,11 +127,14 @@ export const necessaryImport = (options: INecessaryImportOptions): Plugin => {
                 exclude,
                 logLevel,
                 styleDir,
-                extension
+                extension,
+                base: null
             }
         },
         buildStart(): void {
             transformer.ctx = this as unknown as PluginContext
+            // > 扫描并添加基础样式导入语句
+            transformer.appendBaseStyleImportStatement(options.base)
         },
         /** lifecycle: 处理代码 */
         async transform(code: string, id: string): Promise<TransformResult | undefined> {

@@ -65,6 +65,8 @@ export class Transformer {
     /** 插件配置 */
     options!: Required<INecessaryImportOptions> & { extension: Array<IStyleType> }
 
+    baseStyle?: string
+
     /** 用于文件转换的 parser */
     private parsers: Array<IParser> = [vue, def]
 
@@ -128,7 +130,13 @@ export class Transformer {
 
         // ? 如果存在待导入的样式, 那么附加到源码上返回
         if (styleImportStatements.length) {
-            return [...styleImportStatements, source].join('\n')
+            // append source
+            styleImportStatements.push(source)
+            // ! vite 提供有 tree stacking 能力, 所以这里可以放心的多次添加公共样式
+            if (this.baseStyle) {
+                styleImportStatements.unshift(this.baseStyle as string)
+            }
+            return styleImportStatements.join('\n')
         }
     }
 
@@ -172,5 +180,33 @@ export class Transformer {
             })
         }
         return stylePathFactory
+    }
+    /** 获取 base 样式文件夹的导入语句
+     *
+     * @description 当设置启用时, 默认会在入口文件中注入检索的 base 样式
+     * @type {true} 默认检索文件 `base.<extension>`
+     * @type {string} 遵循base指定的样式文件名
+     * @type {null|undefined} 忽略
+     */
+    public appendBaseStyleImportStatement(base?: true | string | null): void {
+        // ? 忽略添加
+        if (!base) return
+        if (typeof base === 'string') {
+            const isStatement: boolean = /import \['"]/.test(base)
+            if (isStatement) {
+                this.baseStyle = base
+            } else {
+                this.baseStyle = `import '${base}';`
+            }
+        } else {
+            // 需要扫描库中包含的样式句
+            const stylePathFactory: IStylePathFactory = this.createStylePathFactory()
+            // 获取生成的路径信息
+            const stylePath = stylePathFactory('base')
+            if (stylePath) {
+                this.baseStyle = `import '${stylePath}';`
+            }
+        }
+        this.logger.info(`necessary import > ${this.options.library} base style: '${this.baseStyle}'`)
     }
 }

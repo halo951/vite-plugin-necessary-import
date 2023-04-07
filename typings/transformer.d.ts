@@ -58,6 +58,7 @@ export declare class Transformer {
     options: Required<INecessaryImportOptions> & {
         extension: Array<IStyleType>;
     };
+    baseStyle?: string;
     /** 用于文件转换的 parser */
     private parsers;
     /** 获取解析器 */
@@ -69,4 +70,12 @@ export declare class Transformer {
     /** 将 组件名转化为样式导入语句 */
     private transformComponentNameToStyleImportStatement;
     private createStylePathFactory;
+    /** 获取 base 样式文件夹的导入语句
+     *
+     * @description 当设置启用时, 默认会在入口文件中注入检索的 base 样式
+     * @type {true} 默认检索文件 `base.<extension>`
+     * @type {string} 遵循base指定的样式文件名
+     * @type {null|undefined} 忽略
+     */
+    appendBaseStyleImportStatement(base?: true | string | null): void;
 }
