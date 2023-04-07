@@ -132,7 +132,7 @@ export class Transformer {
         if (styleImportStatements.length) {
             // append source
             styleImportStatements.push(source)
-            // ! vite 提供有 tree stacking 能力, 所以这里可以放心的多次添加公共样式
+            // ! vite 提供有 treeshake 能力, 所以这里可以放心的多次添加公共样式 (可能会造成一丁点的编译性能下降, 但影响不大~) 
             if (this.baseStyle) {
                 styleImportStatements.unshift(this.baseStyle as string)
             }
