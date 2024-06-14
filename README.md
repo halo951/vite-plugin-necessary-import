@@ -46,7 +46,7 @@ export default defineConfig({
 
 | option       | type                         | required | desc                                                   | default                      |
 | ------------ | ---------------------------- | -------- | ------------------------------------------------------ | ---------------------------- |
-| library      | string                       | ✔        | 需要按需引用的库名                                     |                              |
+| library      | string                       | ✔       | 需要按需引用的库名                                     |                              |
 | base         | string                       |          | 是否添加公共(基础)样式,如果有的情况下                  | false                        |
 | include      | FilterPattern                |          | 扫描文件目录 (见源码注释)                              |                              |
 | exclude      | FilterPattern                |          | 排除文件目录                                           | []                           |

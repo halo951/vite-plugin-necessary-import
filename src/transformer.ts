@@ -63,7 +63,9 @@ export class Transformer {
     root!: string
 
     /** 插件配置 */
-    options!: Required<INecessaryImportOptions> & { extension: Array<IStyleType> }
+    options!: Required<INecessaryImportOptions> & {
+        extension: Array<IStyleType>
+    }
 
     baseStyle?: string
 
@@ -100,7 +102,9 @@ export class Transformer {
     private appendStyleImport(source: string): string | undefined {
         const { library, noComponent } = this.options
 
-        const rootNode = this.ctx.parse(source) as unknown as { body: Array<AcornNode> }
+        const rootNode = this.ctx.parse(source) as unknown as {
+            body: Array<AcornNode>
+        }
         const { body } = rootNode
         // @ 判断 node 节点, 是否为匹配到的组件库
         const isLibraryImport = (node: AcornNode): boolean => node.source.value === library
@@ -132,7 +136,7 @@ export class Transformer {
         if (styleImportStatements.length) {
             // append source
             styleImportStatements.push(source)
-            // ! vite 提供有 treeshake 能力, 所以这里可以放心的多次添加公共样式 (可能会造成一丁点的编译性能下降, 但影响不大~) 
+            // ! vite 提供有 treeshake 能力, 所以这里可以放心的多次添加公共样式 (可能会造成一丁点的编译性能下降, 但影响不大~)
             if (this.baseStyle) {
                 styleImportStatements.unshift(this.baseStyle as string)
             }

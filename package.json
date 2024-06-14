@@ -8,6 +8,16 @@
     "engines": {
         "node": ">= 16"
     },
+    "type": "module",
+    "main": "./dist/es/index.js",
+    "types": "./typings/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./typings/index.d.ts",
+            "import": "./dist/es/index.js",
+            "require": "./dist/cjs/index.js"
+        }
+    },
     "author": {
         "name": "halo951",
         "url": "https://github.com/halo951"
@@ -16,10 +26,6 @@
         "type": "github",
         "url": "https://github.com/halo951/vite-plugin-necessary-import.git"
     },
-    "type": "module",
-    "main": "dist/cjs/index.js",
-    "module": "dist/es/index.js",
-    "typings": "typings/index.d.ts",
     "files": [
         "dist/*",
         "typings/*",
@@ -29,7 +35,7 @@
     "scripts": {
         "clean": "rimraf dist && rimraf typings",
         "build": "rollup --config ./rollup.config.ts --configPlugin typescript2",
-        "lint:fix": "prettier -w **.ts **.md **.json"
+        "lint:fix": "prettier --config ./prettier.config.json -w **.ts **.md **.json"
     },
     "peerDependencies": {
         "vite": "*",

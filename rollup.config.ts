@@ -21,7 +21,11 @@ export default async (): Promise<RollupOptions | Array<RollupOptions>> => {
         strictDeprecations: false,
         input: 'src/index.ts',
         plugins: [
-            typescript({ clean: true, useTsconfigDeclarationDir: true, abortOnError: true }),
+            typescript({
+                clean: true,
+                useTsconfigDeclarationDir: true,
+                abortOnError: true
+            }),
             // compress
             terser()
         ],
