@@ -1,7 +1,7 @@
 {
     "name": "vite-plugin-necessary-import",
     "description": "vite 按需引用插件 (已支持: vue@2.x, vue@3.x)",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "keywords": [],
     "license": "MIT",
     "sideEffects": false,
@@ -16,6 +16,7 @@
         "type": "github",
         "url": "https://github.com/halo951/vite-plugin-necessary-import.git"
     },
+    "type": "module",
     "main": "dist/cjs/index.js",
     "module": "dist/es/index.js",
     "typings": "typings/index.d.ts",
