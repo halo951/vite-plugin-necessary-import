@@ -13,7 +13,7 @@
         "element-plus": "^2.3.0",
         "meri-plus": "^0.1.39",
         "vant": "^4.1.0",
-        "vue": "^3.2.45"
+        "vue": "^3.4.21"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^4.0.0",
